@@ -1,0 +1,24 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2  Indexing · cached results avail…
+ Search › callback
+ All agents · All projects · Any time
+ ──────────────────────────────────────────────────────────────────────────────
+ 1–2 conversations · more ↓
+ › Fix the OAuth callback — Unicode café 你好 and a deliberately long title
+   Pi · Projects/website · Unknown date
+   …the callback URI was encoded twice…
+   Investigate login failures
+   Claude · client/website · Unknown date
+   Validate the callback before setting the cookie.
+
+
+
+
+
+
+
+
+
+ Indexing · Pi: checking file 25 of 100
+ ↑↓ Select  Enter Read  Ctrl-O Actions  Ctrl-K Help
+

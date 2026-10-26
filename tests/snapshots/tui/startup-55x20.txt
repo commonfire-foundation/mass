@@ -1,0 +1,20 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2  Local …
+ Search   Search your conversations…
+ All agents · All projects · Any time
+ ─────────────────────────────────────────────────────
+
+   Find the conversation where you worked it out
+
+   Pi: 80 transcript files
+   Claude: 10 transcript files
+
+   Build a private, plaintext search index.
+   MASS will not launch agents or change
+   transcripts.
+
+   [ Enter: Build index ]   Esc Cancel
+
+
+ Enter Build index  Esc Cancel
+

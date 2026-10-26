@@ -1,0 +1,29 @@
+[package]
+name = "mass"
+version = "0.1.2"
+edition = "2024"
+description = "Local agent conversation search"
+license = "MIT"
+repository = "https://github.com/commonfire-foundation/mass"
+readme = "README.md"
+publish = false
+
+[dependencies]
+anyhow = "1"
+clap = { version = "4", features = ["derive"] }
+crossterm = "0.28"
+# Select the backend directly: the umbrella backend enables Crossterm 0.29 too.
+ratatui = { version = "0.30.2", default-features = false, features = ["std", "layout-cache", "underline-color"] }
+ratatui-crossterm = { version = "0.1.2", default-features = false, features = ["crossterm_0_28", "underline-color"] }
+rusqlite = { version = "0.32", features = ["bundled", "hooks", "functions"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+toml = "0.8"
+walkdir = "2"
+zstd = "0.13"
+chrono = "0.4"
+fs2 = "0.4"
+ctrlc = "3"
+unicode-segmentation = "1"
+tempfile = "3"

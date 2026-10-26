@@ -1,0 +1,15 @@
+.cache/
+__pycache__/
+*.py[cod]
+.venv/
+.cargo-home/
+target/
+dist/
+# Local credentials and conversation caches are never publication inputs.
+.env
+.env.*
+!.env.example
+*.sqlite
+*.sqlite3
+*.sqlite-*
+*.sqlite3-*

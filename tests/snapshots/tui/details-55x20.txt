@@ -1,0 +1,20 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2  Local …
+ S┌ Session details · ↑↓ scroll ────────────────────┐
+ A│Fix the OAuth callback — Unicode café 你好 and a │
+ ─│deliberately long title                          │─
+ 1│                                                 │
+ ›│Agent: Pi                                        │
+  │Project: /home/me/Projects/website               │
+  │Activity: Unknown                                │
+  │Source: fixture                                  │
+  │Reference: 0123456789abcdef                      │
+  │Transcript: /private/transcript.jsonl            │
+  │                                                 │
+  │Esc Close                                        │
+  │                                                 │
+  │                                                 │
+  │                                                 │
+  └─────────────────────────────────────────────────┘
+ ↑↓ Scroll  Esc Close
+

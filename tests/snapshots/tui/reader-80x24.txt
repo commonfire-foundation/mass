@@ -1,0 +1,24 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2         Local conversation search
+ Search   callback
+ All agents · All projects · Any time
+ ──────────────────────────────────────────────────────────────────────────────
+ Fix the OAuth callback — Unicode café 你好 and a deliberately long title
+ Pi · website · Unknown date
+ USER
+ Why does the callback fail?
+ ASSISTANT
+ Redirect handling
+ The callback URI was encoded twice. Preserve the original path.
+
+   ┌ rust
+     let callback = decode_once(uri);
+     assert_eq!(callback, expected);
+   └
+ Unicode paths: café / 你好
+
+
+ History 100% · 4 matches nearby · at 1
+
+ ↑↓ Scroll  / Find  Ctrl-O Actions  Esc Back
+

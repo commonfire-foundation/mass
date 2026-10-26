@@ -1,0 +1,24 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2         Local conversation search
+ Search › callback
+ All agents · All projects · Any time
+ ──────────────────────────────────────────────────────────────────────────────
+
+   Unable to load conversations
+
+   No index yet. Press Ctrl-L to build a private cache.
+
+
+
+
+
+
+
+
+
+
+
+
+ Search failed: No index yet. Press Ctrl-L to build a private cache.
+ ↑↓ Select  Enter Read  Ctrl-O Actions  Ctrl-K Help
+

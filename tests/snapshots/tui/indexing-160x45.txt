@@ -1,0 +1,45 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2                                                                               Indexing · cached results available
+ Search › callback
+ All agents · All projects · Any time
+ ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ 1–2 conversations · more ↓                                         │  Fix the OAuth callback — Unicode café 你好 and a deliberately long title
+ › Fix the OAuth callback — Unicode café 你好 and a deliberately …  │  Pi · website · Unknown date
+   Pi · Projects/website · Unknown date                             │  USER
+   …the callback URI was encoded twice…                             │  Why does the callback fail?
+   Investigate login failures                                       │  ASSISTANT
+   Claude · client/website · Unknown date                           │  Redirect handling
+   Validate the callback before setting the cookie.                 │  The callback URI was encoded twice. Preserve the original path.
+                                                                    │
+                                                                    │    ┌ rust
+                                                                    │      let callback = decode_once(uri);
+                                                                    │      assert_eq!(callback, expected);
+                                                                    │    └
+                                                                    │  Unicode paths: café / 你好
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │
+                                                                    │  History 100% · 4 matches nearby · at 1
+ Indexing · Pi: checking file 25 of 100
+ ↑↓ Select  Enter Read  Ctrl-F Filters  Ctrl-O Actions  Ctrl-K Help
+

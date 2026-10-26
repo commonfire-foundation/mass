@@ -1,0 +1,35 @@
+
+ M.A.S.S. - Multi Agent Session Search v0.1.2                                                 Local conversation search
+ Search   callback
+ All agents · All projects · Any time
+ ──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+ 1–2 conversations · more ↓                         │  Fix the OAuth callback — Unicode café 你好 and a deliberately …
+ › Fix the OAuth callback — Unicode café 你好 and…  │  Pi · website · Unknown date
+   Pi · Projects/websi┌ Session details · ↑↓ scroll ─────────────────────────────────────────────┐
+   …the callback URI w│Fix the OAuth callback — Unicode café 你好 and a deliberately long title  │
+   Investigate login f│                                                                          │
+   Claude · client/web│Agent: Pi                                                                 │
+   Validate the callba│Project: /home/me/Projects/website                                        │e the original path.
+                      │Activity: Unknown                                                         │
+                      │Source: fixture                                                           │
+                      │Reference: 0123456789abcdef                                               │
+                      │Transcript: /private/transcript.jsonl                                     │
+                      │                                                                          │
+                      │Esc Close                                                                 │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      │                                                                          │
+                      └──────────────────────────────────────────────────────────────────────────┘
+                                                    │
+                                                    │
+                                                    │
+                                                    │
+                                                    │  History 100% · 4 matches nearby · at 1
+
+ ↑↓ Scroll  Esc Close
+
