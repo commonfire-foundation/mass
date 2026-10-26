@@ -1,0 +1,60 @@
+name: Bug report
+description: Report a reproducible problem using invented, non-sensitive data.
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        MASS is a development preview. Do not upload real conversations, databases, credentials, or unredacted logs/screenshots. Exports are not redacted.
+        For suspected vulnerabilities, use the repository's Security tab → Report a vulnerability instead of this public form.
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: This report contains only invented or carefully sanitized examples, not real conversations, secrets, or private paths.
+          required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      description: Output of mass --version and, for source builds, the commit hash.
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: Platform and terminal
+      description: Distribution, architecture, terminal, and whether NO_COLOR is set. Do not include hostnames or usernames.
+    validations:
+      required: true
+  - type: dropdown
+    id: agent
+    attributes:
+      label: Affected history format
+      multiple: true
+      options:
+        - Pi
+        - Claude Code
+        - Codex
+        - Not format-specific
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Prefer the synthetic demo or a small invented fixture. Never attach a real transcript or cache.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual result
+      description: Summarize errors; inspect all text and screenshots before sharing. Raw mass status output can reveal private paths.
+    validations:
+      required: true

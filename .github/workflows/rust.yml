@@ -1,0 +1,51 @@
+name: Rust checks
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: rust-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  CARGO_HOME: ${{ github.workspace }}/.cargo-home
+  CARGO_TARGET_DIR: ${{ github.workspace }}/target
+  PYTHONDONTWRITEBYTECODE: "1"
+jobs:
+  linux:
+    name: Linux (${{ matrix.os }})
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, ubuntu-24.04]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
+        with:
+          components: rustfmt, clippy
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+        with:
+          python-version: "3.12"
+      - name: Install prototype test dependency
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fzf
+      - run: cargo fmt --check
+      - run: cargo clippy --locked --all-targets -- -D warnings
+      - run: cargo test --locked
+      - run: "NO_COLOR=1 cargo test --locked tui::"
+      - run: python3 tests/rust_tui_pty.py
+      - run: python3 tests/rust_cli_recovery.py
+      - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: cargo build --release --locked
+      - run: MASS_TEST_BINARY="$PWD/target/release/mass" python3 tests/rust_tui_pty.py
+      - run: MASS_TEST_BINARY="$PWD/target/release/mass" python3 tests/rust_cli_recovery.py
+      - run: python3 scripts/demo.py --check
+      - run: bash scripts/package.sh
+      - name: Verify archive checksum and fresh-home package behavior
+        run: |
+          (cd dist && sha256sum -c ./*.tar.gz.sha256)
+          python3 tests/rust_package_smoke.py
