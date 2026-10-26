@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# A Bash/fzf front end. Transcript parsing never runs inside fzf itself.
+set -euo pipefail
+ROOT=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+export AS_BACKEND="$ROOT/backend.py"
+export AS_PYTHON="${MASS_PYTHON:-python3}"
+export AS_DB="${MASS_DB:-$ROOT/.cache/sessions.sqlite3}"
+
+help() {
+  printf '%s\n' \
+    'MASS — Multi Agent Session Search' \
+    '' \
+    '  ./mass demo           Try the picker with synthetic sessions' \
+    '  ./mass discover       Count local transcript files; no content read' \
+    '  ./mass index          Build/refresh the local text index' \
+    '  ./mass                Open the picker' \
+    '  ./mass search WORDS   Print full-text results without the TUI' \
+    '  ./mass status         Show index coverage' \
+    '' \
+    'Picker: type to search • Ctrl-F fuzzy titles/projects • Ctrl-S full text' \
+    '        Enter read preview • Ctrl-O confirm resume • Esc exit' \
+    '' \
+    'Search supports prefix words and agent:pi / agent:claude / agent:codex.' \
+    'Indexing can take time on large histories; it never launches an agent.' \
+    'Set MASS_SOURCES to a sources JSON file; MASS_DB changes the cache.'
+}
+
+backend() { "$AS_PYTHON" "$AS_BACKEND" --db "$AS_DB" "$@"; }
+
+case "${1:-}" in
+  -h|--help|help) help; exit 0 ;;
+  discover|index|status) command=$1; shift; backend "$command" "$@"; exit $? ;;
+  search) shift; backend search --query="$*"; exit $? ;;
+  demo)
+    "$AS_PYTHON" "$ROOT/demo.py" "$ROOT/.cache/mass-demo"
+    export MASS_SOURCES="$ROOT/.cache/mass-demo/sources.json"
+    export AS_DB="$ROOT/.cache/mass-demo/index.sqlite3"
+    backend index
+    ;;
+  '') ;;
+  *) printf 'Unknown command: %s\nRun ./mass --help for usage.\n' "$1" >&2; exit 2 ;;
+esac
+
+command -v fzf >/dev/null || { printf 'fzf is required for the picker.\n' >&2; exit 1; }
+[[ -t 0 && -t 1 ]] || { printf 'The picker needs a terminal. Use ./mass search WORDS for plain output.\n' >&2; exit 1; }
+[[ -f "$AS_DB" ]] || {
+  printf 'No index yet. Run ./mass index first, or ./mass demo for a safe preview.\n' >&2
+  exit 1
+}
+
+# fzf shell-quotes {q}; {1} is an index-generated integer, never source text.
+# Expansion deliberately happens in fzf's child shell, not while building commands.
+# shellcheck disable=SC2016
+search='"$AS_PYTHON" "$AS_BACKEND" --db "$AS_DB" search --query={q}'
+# shellcheck disable=SC2016
+list='"$AS_PYTHON" "$AS_BACKEND" --db "$AS_DB" search --limit 100000'
+# shellcheck disable=SC2016
+preview='"$AS_PYTHON" "$AS_BACKEND" --db "$AS_DB" preview {1} --query={q}'
+full_header='Full text · Ctrl-F fuzzy · Enter read · Ctrl-O resume · Esc exit'
+fuzzy_header='Fuzzy titles/projects · Ctrl-S full text · Enter read · Ctrl-O resume'
+colors=()
+[[ -z ${NO_COLOR:-} ]] || colors+=(--color=bw)
+
+while true; do
+  selection=''
+  code=0
+  selection=$(backend search | SHELL=/bin/bash FZF_DEFAULT_OPTS='' FZF_DEFAULT_OPTS_FILE='' fzf \
+    --disabled --layout=reverse --height=100% --border=rounded --border-label=' MASS ' \
+    --delimiter=$'\t' --with-nth=2.. --nth=2.. --no-multi \
+    --prompt='Search > ' --header="$full_header" \
+    --preview="$preview" --preview-window='right,58%,wrap' \
+    --expect=ctrl-o \
+    --bind="change:reload(sleep 0.12; $search)" \
+    --bind="ctrl-f:unbind(change)+enable-search+clear-query+reload($list)+change-prompt(Fuzzy > )+change-header($fuzzy_header)" \
+    --bind="ctrl-s:disable-search+clear-query+rebind(change)+reload($search)+change-prompt(Search > )+change-header($full_header)" \
+    "${colors[@]}" ) || code=$?
+  if ((code == 1 || code == 130)); then exit 0; fi
+  if ((code != 0)); then printf 'Picker failed (exit %s).\n' "$code" >&2; exit "$code"; fi
+  key=${selection%%$'\n'*}
+  row=${selection#*$'\n'}
+  ident=${row%%$'\t'*}
+  [[ $ident =~ ^[0-9]+$ ]] || { printf 'No session selected.\n' >&2; continue; }
+  if [[ $key == ctrl-o ]]; then
+    if ! backend plan "$ident"; then
+      read -r -p 'Press Enter to return to search. ' _
+      continue
+    fi
+    printf '\n'
+    read -r -p 'Resume this session in this terminal? [y/N] ' answer
+    if [[ $answer == y || $answer == Y ]]; then
+      backend resume "$ident" --confirm
+      exit $?
+    fi
+  elif command -v less >/dev/null; then
+    backend preview "$ident" | less
+  else
+    backend preview "$ident"
+    read -r -p 'Press Enter to return to search. ' _
+  fi
+done
