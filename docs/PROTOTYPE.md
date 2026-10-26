@@ -80,7 +80,7 @@ fuzzy mode loads at most 100,000 session rows.
 
 - Bash
 - Python 3.10+ with SQLite FTS5
-- A recent fzf; tested with **0.74.4**
+- A recent fzf; tested with **0.74.5**
 - `less` for the separate preview, optional
 - Python **3.14+ with `compression.zstd`** for compressed Codex transcripts
 

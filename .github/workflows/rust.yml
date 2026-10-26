@@ -22,17 +22,26 @@ jobs:
     runs-on: ${{ matrix.os }}
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
           persist-credentials: false
       - uses: dtolnay/rust-toolchain@b725eda525362e7cf34af9a7243cac1e3f01a7ec # stable
         with:
           components: rustfmt, clippy
-      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          python-version: "3.12"
-      - name: Install prototype test dependency
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends fzf
+          python-version: "3.14"
+      - name: Prepare pinned prototype test dependencies
+        run: |
+          mkdir -p target/ci-tools
+          curl --fail --location --silent --show-error --retry 3 \
+            https://github.com/junegunn/fzf/releases/download/v0.74.5/fzf-0.74.5-linux_amd64.tar.gz \
+            -o target/ci-tools/fzf.tar.gz
+          echo 'd47d7f882972c7d674dbbba998ffa4116e68379616ffac7695d0671e9a722c5f  target/ci-tools/fzf.tar.gz' | sha256sum -c
+          tar -xzf target/ci-tools/fzf.tar.gz -C target/ci-tools fzf
+          echo "$PWD/target/ci-tools" >> "$GITHUB_PATH"
+          target/ci-tools/fzf --version
+          python3 -c 'import compression.zstd'
       - run: cargo fmt --check
       - run: cargo clippy --locked --all-targets -- -D warnings
       - run: cargo test --locked

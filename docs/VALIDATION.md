@@ -158,7 +158,9 @@ not a claim that automated scanning can prove the absence of all secrets.
 
 Hosted CI is configured for Ubuntu 22.04 and 24.04, fresh-home package behavior,
 Gitleaks, and warnings-as-errors dependency auditing. Actions are SHA-pinned and
-workflow tokens are explicitly read-only. A configured check is not proof of a
+workflow tokens are explicitly read-only. Python 3.14 and checksum-pinned fzf
+0.74.5 ensure the prototype's compressed-history and real-picker cases run rather
+than skip or fail on Ubuntu's older fzf packages. A configured check is not proof of a
 successful hosted run; GitHub's checks on the exact commit are authoritative.
 Human terminal acceptance, distribution support promises, and exact release
 artifact approval remain separate gates in `docs/LOCAL-RELEASE.md`.
