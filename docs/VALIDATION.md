@@ -94,7 +94,7 @@ The change defers excerpt generation until after ranking and paging. It does not
 
 ## Correctness and optimization follow-up
 
-The automated checks listed under Passing checks were rerun against the corrected implementation. Historical real-corpus and native-probe findings were not rerun. This follow-up did not access or upgrade live stores or caches. A fresh, temporary archive containing the current release binary, documentation, and generated dependency notices passed the package smoke test without replacing existing `dist/` artifacts. CI now also specifies release-binary PTY/recovery checks; remote execution remains unverified.
+The automated checks listed under Passing checks were rerun against the corrected implementation. Historical real-corpus and native-probe findings were not rerun. This follow-up did not access or upgrade live stores or caches. A fresh, temporary archive containing the current release binary, documentation, and generated dependency notices passed the package smoke test without replacing existing `dist/` artifacts. CI also specifies release-binary PTY/recovery checks; the later public-preview hosted results are recorded below.
 
 New regressions cover:
 
@@ -155,16 +155,31 @@ can include inactive optional backends. Regressions require missing active
 notices and malformed dependency selections to fail rather than be silently
 omitted. Gitleaks 8.30.1 found no secrets in the publishable source export; this is
 not a claim that automated scanning can prove the absence of all secrets.
+A subsequent clean Git clone of `1b5cb4c` also passed the release build, demo
+check, and 69 Rust tests using shared Cargo caches. Each staged commit and the
+complete initial Git history passed Gitleaks before the first push.
 
 Hosted CI is configured for Ubuntu 22.04 and 24.04, fresh-home package behavior,
 Gitleaks, and warnings-as-errors dependency auditing. Actions are SHA-pinned and
 workflow tokens are explicitly read-only. Python 3.14 and checksum-pinned fzf
 0.74.5 ensure the prototype's compressed-history and real-picker cases run rather
-than skip or fail on Ubuntu's older fzf packages. A configured check is not proof of a
-successful hosted run; GitHub's checks on the exact commit are authoritative.
+than skip or fail on Ubuntu's older fzf packages.
+
+The first complete hosted pass is commit
+`b0572b037ab6564c3ab158ad9798ea12db3f1c0c`: both Ubuntu jobs and both security
+jobs succeeded, including release PTY/recovery, synthetic demo, package generation,
+checksum verification, and the empty-home package smoke check. GitHub's checks on
+the exact commit remain authoritative for later changes.
+
+Rust checks:
+https://github.com/commonfire-foundation/mass/actions/runs/40274374265
+
+Security checks:
+https://github.com/commonfire-foundation/mass/actions/runs/40274374227
+
 Human terminal acceptance, distribution support promises, and exact release
 artifact approval remain separate gates in `docs/LOCAL-RELEASE.md`.
 
 ## Not verified / not claimed
 
-Exhaustive real-corpus recall, cold-cache latency, worst-case memory bounds, network/filesystem syscall tracing, normal authenticated-agent configurations and broader native resume compatibility, other operating systems/distributions, broad human theme/accessibility review, and remote CI execution. Resume remains explicitly opt-in and disabled by default. The preserved prototype has not been removed. These limits are documented rather than expanded into first-release feature work.
+Exhaustive real-corpus recall, cold-cache latency, worst-case memory bounds, network/filesystem syscall tracing, normal authenticated-agent configurations and broader native resume compatibility, other operating systems and broader distribution coverage, and broad human theme/accessibility review. Resume remains explicitly opt-in and disabled by default. The preserved prototype has not been removed. These limits are documented rather than expanded into first-release feature work.
